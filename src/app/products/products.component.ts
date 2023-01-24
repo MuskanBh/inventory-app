@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct, ProductService } from '../product.service';
 
+
 @Component({
   selector: 'in-products',
   templateUrl: './products.component.html',
@@ -11,14 +12,33 @@ import { IProduct, ProductService } from '../product.service';
 export class ProductsComponent implements OnInit {
   products$: Observable<IProduct[]> = this.productService.products$;
   delete = false;
+  productOpen=false;
+  selectedProduct: IProduct;
   productToBeDeleted;
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
   }
-  AddProduct(){}
+  AddProduct(){
+    this.productOpen = true;
+    this.selectedProduct = undefined;
+  }
   onEdit(product: IProduct){
-
+    this.productOpen = true;
+    this.selectedProduct = product;
+  }
+  handleFinish(event) {
+    if (event && event.product) {
+    if (this.selectedProduct) {
+    // Edit Flow
+    this.productService.editProduct(this.selectedProduct.id,
+    event.product);
+    } else {
+    // Save New
+    this.productService.addProduct(event.product);
+    }
+    }
+    this.productOpen = false;
   }
   onCancel(){
     this.delete=false;

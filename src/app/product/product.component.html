@@ -4,8 +4,9 @@
 <clr-wizard-title>{{product? 'Edit Product': 'Add NewProduct'}}</clr-wizard-title>
 <clr-wizard-button [type]="'cancel'" (click)="handleClose()">Cancel</clr-wizard-button>
 <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-<clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-<clr-wizard-button [type]="'finish'" (click)="handleClose()">Finish</clr-wizard-button>
+<clr-wizard-button [type]="'next'" [clrWizardButtonDisabled]="isBasicInvalid"
+>Next</clr-wizard-button>
+<clr-wizard-button [type]="'finish'"  [clrWizardButtonDisabled]="isExpirationInvalid" (click)="handleFinish()">Finish</clr-wizard-button>
 <clr-wizard-page>
   <ng-template clrPageTitle> Select Device type</ng-template>
   <div class="clr-row devices">
@@ -30,6 +31,7 @@
  <label for="product-name">Product Name *</label>
  <input clrInput type="text" id="product-name"
  placeholder="IPhone X..." formControlName="name">
+ <clr-control-error>This Field is Required!</clr-control-error>
  </clr-input-container>
  <!-- Toggle Switch for active -->
  <div class="toggle-switch">
@@ -60,6 +62,7 @@
   <clr-input-container formGroupName="expiration">
     <input type="date" clrInput clrDate
     formControlName="expirationDate">
+    <clr-control-error>{{expirationError}}</clr-control-error>
     </clr-input-container>
 
 </clr-wizard-page>
