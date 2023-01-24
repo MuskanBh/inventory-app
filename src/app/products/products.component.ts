@@ -10,6 +10,8 @@ import { IProduct, ProductService } from '../product.service';
 })
 export class ProductsComponent implements OnInit {
   products$: Observable<IProduct[]> = this.productService.products$;
+  delete = false;
+  productToBeDeleted;
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
@@ -18,8 +20,18 @@ export class ProductsComponent implements OnInit {
   onEdit(product: IProduct){
 
   }
+  onCancel(){
+    this.delete=false;
+  }
+  onConfirm(){
+    this.onCancel();
+    this.productService.onDelete(this.productToBeDeleted);
+  }
   onDelete(product: IProduct){
-    this.productService.onDelete(product);
+    this.delete=true;
+    this.productToBeDeleted= product;
+
+    // this.productService.onDelete(product);
   }
   // trackById(index: any, item: any){
   //   return(item.index)
